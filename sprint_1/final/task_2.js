@@ -49,6 +49,8 @@
 1111
 Вывод
 0
+
+ссылка на отчет в контесте https://contest.yandex.ru/contest/22450/run-report/73031562/
 */
 
 const readline = require('readline');
