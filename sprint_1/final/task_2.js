@@ -67,7 +67,7 @@ const dictionary = new Map()
 
 rl.on('line', (input) => {
     if(phase === 0) {
-        fingers = +input*2;
+        fingers = +input * 2;
     }
     if(phase > 0) {
         str += input
