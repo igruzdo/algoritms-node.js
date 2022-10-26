@@ -48,6 +48,7 @@ rl.on('line', (input) => {
 rl.on('close', () => {
     let prevEmptyAreaNumber;
     let maximumDistance;
+
     for(let i = 0; i < arrayOfArea.length; i++) {
         //граничный случай, если пустой участок идет первым в массиве
         if(arrayOfArea[i] === "0" && i === 0) {
@@ -57,8 +58,9 @@ rl.on('close', () => {
         //граничный случай, когда встречаем первый пустой участок
         if(arrayOfArea[i] === "0" && prevEmptyAreaNumber === undefined) {
             prevEmptyAreaNumber = i;
+            
             for(let j = 0; j < i; j++) {
-                arrayOfArea[j] = `${i - j}`
+                arrayOfArea[j] = `${i - j}`;
             }
             continue;
         }
@@ -73,7 +75,7 @@ rl.on('close', () => {
         if(arrayOfArea[i] === "0" && prevEmptyAreaNumber >= 0) {
             //находим середину между двумя пустыми участками и округляем в большую сторону
             maximumDistance = Math.ceil((i - prevEmptyAreaNumber - 1) / 2);
-            let maximumDistanceIsEven = (i - prevEmptyAreaNumber - 1) % 2 === 0
+            let maximumDistanceIsEven = (i - prevEmptyAreaNumber - 1) % 2 === 0;
 
             for(let j = 1; j + prevEmptyAreaNumber < i; j++) {
                 if((maximumDistanceIsEven && j <= maximumDistance) || (!maximumDistanceIsEven && j < maximumDistance)) {

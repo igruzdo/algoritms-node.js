@@ -63,25 +63,28 @@ let phase = 0;
 let fingers;
 let str = '';
 let result = 0;
-const dictionary = {}
+const dictionary = new Map()
 
 rl.on('line', (input) => {
     if(phase === 0) {
         fingers = +input*2;
     }
     if(phase > 0) {
-        str += input.replace(/\./g,'')
+        str += input
     }
     phase++
 });
 
 rl.on('close', () => {
     [...str].forEach(item => {
-        dictionary[item] ? dictionary[item]++ : dictionary[item] = 1;
+        const value =  dictionary.get(item)
+        value ? dictionary.set(item, value + 1) : dictionary.set(item, 1);
     })
 
-    for(key in dictionary) {
-        dictionary[key] <= fingers ? result++ : null
+    dictionary.delete('.')
+
+    for(let value of dictionary.values()) {
+        value <= fingers ? result++ : null
     }
 
     process.stdout.write(result.toString());
