@@ -105,6 +105,5 @@ rl.on('line', (input) => {
                 break;
         }
     }
-    // console.dir(queqe)
     phase++
 });
