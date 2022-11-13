@@ -20,8 +20,12 @@ push_front(x), pop_back(), pop_front() работали корректно. Но
 -- ВРЕМЕННАЯ СЛОЖНОСТЬ --
 Добавление и извлечение будет за О(1)
 
+-- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ --
+Так как на каждый элемент очереди создается отдельный объект в памяти, 
+то пространственная сложность О(n)
+
 -- Посылка --
-https://contest.yandex.ru/contest/22781/submits/
+https://contest.yandex.ru/contest/22781/run-report/74096257/
 
 */
 
@@ -43,15 +47,16 @@ class QuequeDeck {
         this.end = end;
         this.maxNumber = number;
         this.counter = 0;
+        this.errorMessage = 'error'
     }
 
     setSize(number) {
         this.maxNumber = number;
     }
 
-    push_back(value) {
+    pushBack(value) {
         if(this.counter + 1 > this.maxNumber) {
-            return 'error';
+            return this.errorMessage;
         }
 
         if(this.start && this.end) {
@@ -75,9 +80,9 @@ class QuequeDeck {
         }
     }
 
-    push_front(value) {
+    pushFront(value) {
         if(this.counter + 1 > this.maxNumber) {
-            return 'error';
+            return this.errorMessage;
         }
 
         if(this.start && this.end) {
@@ -102,9 +107,9 @@ class QuequeDeck {
     }
 
 
-    pop_front() {
+    popFront() {
         if(this.counter === 0) {
-            return 'error';
+            return this.errorMessage;
         }
 
         if(this.counter === 1) {
@@ -122,9 +127,9 @@ class QuequeDeck {
         }
     }
 
-    pop_back() {
+    popBack() {
         if(this.counter === 0) {
-            return 'error';
+            return this.errorMessage;
         }
 
         if(this.counter === 1) {
@@ -158,25 +163,25 @@ rl.on('line', (input) => {
     if(phase > 1) {
         switch (comand) {
             case 'push_front':
-                let errorFront = queqe.push_front(string[1]);
+                let errorFront = queqe.pushFront(string[1]);
                 if(errorFront) {
                     process.stdout.write(errorFront);
                     process.stdout.write('\n');
                 }
                 break;
             case 'push_back':
-                let errorBack = queqe.push_back(string[1]);
+                let errorBack = queqe.pushBack(string[1]);
                 if(errorBack) {
                     process.stdout.write(errorBack);
                     process.stdout.write('\n');
                 }
                 break;
             case 'pop_front':
-                process.stdout.write(`${queqe.pop_front()}`);
+                process.stdout.write(`${queqe.popFront()}`);
                 process.stdout.write('\n');
                 break;
             case 'pop_back':
-                process.stdout.write(`${queqe.pop_back()}`);
+                process.stdout.write(`${queqe.popBack()}`);
                 process.stdout.write('\n');
                 break;
         }

@@ -38,6 +38,8 @@ const rl = readline.createInterface({
     input: process.stdin,
 });
 
+const divisionByZeroErrorMessage = 'Error: division by zero'
+
 rl.on('line', (input) => {
     let string = input.split(' ');
     let operandStak = [];
@@ -56,7 +58,9 @@ rl.on('line', (input) => {
             case '/':
                 let one = operandStak.pop();
                 let two = operandStak.pop();
-                
+
+                if(one === 0) return process.stdout.write(divisionByZeroErrorMessage)
+
                 operandStak.push(Math.floor(two / one));
                 break;
             default: 
@@ -64,5 +68,6 @@ rl.on('line', (input) => {
                 break;
         }
     }
-    operandStak.length > 1 ? process.stdout.write(`${operandStak[operandStak.length - 1]}`) : process.stdout.write(`${operandStak[0]}`);
+    operandStak.length > 1 ? process.stdout.write(`${operandStak[operandStak.length - 1]}`)
+    : process.stdout.write(`${operandStak[0]}`);
 });
