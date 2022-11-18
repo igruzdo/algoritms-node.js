@@ -45,41 +45,52 @@ let number;
 
 rl.on('line', (input) => {
     number = parseInt(input);
-    let res = getBracketsArray(number).filter(item => item.length === number*2);
+    // let res = getBracketsArray(number).filter(item => item.length === number*2);
+    let res = getBracketsArray(number * 2, '');
     // console.log(res)
     // for(let i = 1; i < number; i++) {
     //     res.push(...getBracketsArray(i), ...getBracketsArray(number - i))
     // }
     // res = [...new Set([...res])]
-    process.stdout.write(`${res.join('\n')}`);
-    process.stdout.write(`${res.length}`);
+    // process.stdout.write(`${res.join('\n')}`);
+    // process.stdout.write(`${res.length}`);
 });
 
-function getBracketsArray(steps) {
+// function getBracketsArray(steps) {
 
-    if(steps === 1) {
-        return ['()']
+//     if(steps === 1) {
+//         return ['()']
+//     } else {
+//         let result = [];
+
+//         for(let i = 1; i < steps; i++) {
+//             let first = getBracketsArray(i);
+//             // console.log('first', first)
+//             first.forEach(item => {
+//                 result.push(`(${item})`, `${item}()`, `()${item}`)
+//             })
+//             let second = getBracketsArray(steps - i);
+//             // console.log('second', second)
+//             second.forEach(item => {
+//                 result.push(`(${item})`, `${item}()`, `()${item}`)
+//             })
+
+//             first.forEach(firstItem => {
+//                 second.forEach(secondItem => {
+//                     result.push(firstItem.concat(secondItem));
+//                 })
+//             })
+//         }
+//         return [...new Set([...result.sort()])];
+//     }
+// }
+
+function getBracketsArray(steps, prefix) {
+
+    if(steps === 0) {
+        console.log(prefix)
     } else {
-        let result = [];
-
-        for(let i = 1; i < steps; i++) {
-            let first = getBracketsArray(i);
-            // console.log('first', first)
-            first.forEach(item => {
-                result.push(`(${item})`, `${item}()`, `()${item}`)
-            })
-            let second = getBracketsArray(steps - i);
-            // console.log('second', second)
-            second.forEach(item => {
-                result.push(`(${item})`, `${item}()`, `()${item}`)
-            })
-
-            first.forEach(firstItem => {
-                second.forEach(secondItem => {
-                    result.push(firstItem.concat(secondItem));
-                })
-            })
-        }
-        return [...new Set([...result.sort()])];
+        getBracketsArray(steps - 1, prefix + '(');
+        getBracketsArray(steps - 1, prefix + ')');
     }
 }
