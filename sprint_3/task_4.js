@@ -39,90 +39,38 @@
 */
 
 const readline = require('readline');
-
 const rl = readline.createInterface({
     input: process.stdin,
 });
 
-const greedFactor = new Map();
-let minGreed = 1000;
+let greedFactor;
 let cookiesNumber;
 let result = 0;
-
 let phase = 0;
-
 rl.on('line', (input) => {
     switch (phase) {
-        case 0:
-            numberOfChildren = parseInt(input);
-            break;
         case 1:
-            input.split(' ').forEach(item => {
-                let parseItem = parseInt(item);
-                minGreed = parseItem < minGreed ? parseItem : minGreed;
-
-                let existingCount = greedFactor.get(item);
-
-                if(!existingCount) {
-                    greedFactor.set(item, 1);
-                } else {
-                    greedFactor.set(item, existingCount + 1);
-                }
-            });
+            greedFactor = input.split(' ').sort((a, b) => b - a);
             break;
         case 2:
-            cookiesNumber = parseInt(input);
+            cookiesNumber = Number(input);
             break;
         case 3:
-            const inputCookies = input.split(' ');
-            for(let i = 0; i < cookiesNumber; i++) {
-                if(greedFactor.size === 0) {
-                    break;
-                }
+            const inputCookies = input.split(' ').sort((a, b) => b - a)
 
-                let cookie = parseInt(inputCookies[i]);
-                if(cookie >= minGreed) {
-                    let diff = 1000;
-                    let greedMemo;
-                    for(let greed of greedFactor.keys()) {
-                        let parseGreed = parseInt(greed);
-                        if(parseGreed <= cookie) {
-                            if(parseGreed === cookie) {
-                                result++;
-                                let childrenCount = greedFactor.get(greed);
-                                if(childrenCount === 1) {
-                                    greedFactor.delete(greed)
-                                } else {
-                                    greedFactor.set(greed, childrenCount - 1);
-                                };
-                                diff = 1000;
-                                greedMemo = null;
-                                break;
-                            } else {
-                                if((cookie - parseGreed) <  diff) {
-                                    diff = cookie - parseGreed;
-                                    greedMemo = greed;
-                                }
-                            }
-                        }
-                    }
-                    if(greedMemo) {
-                        result++;
-                        let childsCount = greedFactor.get(greedMemo);
-                        if(childsCount === 1) {
-                            greedFactor.delete(greedMemo)
-                        } else {
-                            greedFactor.set(greedMemo, childsCount - 1);
-                        }
-                        
-                    }
+
+            for(let i = 0; i < cookiesNumber; i++) {
+                if(inputCookies[inputCookies.length - 1] - greedFactor[greedFactor.length - 1] >= 0) {
+                    result++
+                    inputCookies.pop();
+                    greedFactor.pop()
+                } else {
+                    inputCookies.pop();
                 }
+                if(greedFactor.length === 0) break;
             }
+            process.stdout.write(`${result}`);
             break;
     };
     phase++
 });
-
-rl.on('close', () => {
-    process.stdout.write(`${result}`);
-})
