@@ -52,46 +52,33 @@ B3 = { 6, 5 }
 */
 
 
-// const readline = require('readline');
+const readline = require('readline');
 
-// const rl = readline.createInterface({
-//     input: process.stdin,
-// });
-// let phase = 0;
-// let length = 0;
-// let budget;
-// let result = [];
-// let prise;
+const rl = readline.createInterface({
+    input: process.stdin,
+});
+let length = 0;
+let array;
+let phase = 0;
+let result = 0;
 
-// rl.on('line', (input) => {
-//     if(phase === 0) {
-//         length = parseInt(input);
-//     }
-//     if(phase === 1) {
-//         budget = input.split(' ').map(item => parseInt(item));
-//     }
-//     if(phase === 2) {
-//         prise = parseInt(input);
-//         for(let i = 0; i < length; i++) {
-//             if (budget[i] >= prise) {
-//                 result.push(i + 1);
-//                 prise = prise * 2;
-//             }
-//             if (result.length === 2) {
-//                 break;
-//             }
-//         }
-//     }
-//     phase++
-// });
+rl.on('line', (input) => {
+    if(phase === 0) {
+        length = parseInt(input);
+    }
+    if(phase === 1) {
+        array = input.split(' ')
+        let summI = 0;
+        let summValues = 0;
 
-
-// rl.on('close', () => {
-//     if(result.length === 0) {
-//         process.stdout.write(`-1 -1`);
-//     } else if(result.length === 1) {
-//         process.stdout.write(`${result[0]} -1`);
-//     } else {
-//         process.stdout.write(`${result.join(' ')}`);
-//     }
-// })
+        for(let i = 0; i < length; i++) {
+            summI += i;
+            summValues += parseInt(array[i]);
+            if(summI === summValues) {
+                result++
+            }
+        }
+        process.stdout.write(`${result}`);
+    }
+    phase++
+});
