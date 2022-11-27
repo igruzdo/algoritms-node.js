@@ -76,9 +76,7 @@ function brokenSearch(arr, k) {
 
     if(k === arr[0]) return 0;
     if(k === arr[end]) return end;
-    if(arr.length === 2) {
-        return -1;
-    }
+    if(arr.length === 2)  return -1;
 
     while((end - start) > 1) {
         if (arr[middle] === k) return middle;
