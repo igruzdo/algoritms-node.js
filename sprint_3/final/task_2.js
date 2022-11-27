@@ -85,7 +85,15 @@ timofey
     Асимптотическая сложность O(n), так как мы не копируются элементы массива, а вырезаются и вставляются.
 
 -- Посылка --
-    https://contest.yandex.ru/contest/23815/run-report/76487704/
+    https://contest.yandex.ru/contest/23815/run-report/76682896/
+
+!!!! КОМММЕНТАРИЙ ДЛЯ РЕВЬЮВЕРА!!!!!
+
+Спасибо за проверку, ваши замечания учел.
+Изначально тоже думал сделать преобразование через объект, но подумал, что это усложнит решение и увеличит временную сложность, плюс будет занимать больше памяти, но
+скорость наоборот выросла, вместо 1.6 секунд - 0.9, памяти примерно столько же потребляет))
+
+Посылку обновил.
 */
 
 const readline = require('readline');
@@ -103,16 +111,50 @@ rl.on('line', (input) => {
         numberOfParticipants = parseInt(input);
     }
     if (phase > 0 && phase <= numberOfParticipants) {
-        arrayOfParticipants.push(input.split(' '));
-    } 
+        const arrItem = input.split(' ');
+        const obj = {
+            login: arrItem[0],
+            tasks: Number(arrItem[1]),
+            penalty: Number(arrItem[2]),
+        }
+        arrayOfParticipants.push(obj);
+    }
 
     phase++
 });
 
-function sort(array) {
+function compareItemsLeft(indicatorItem, supportItem) {
+    if (indicatorItem.tasks > Number(supportItem.tasks)) {
+       return true;
+    } else if (indicatorItem.tasks === Number(supportItem.tasks)) {
+        if (indicatorItem.penalty < Number(supportItem.penalty)) {
+            return true;
+        } else if (indicatorItem.penalty === Number(supportItem.penalty)) {
+            if (indicatorItem.login < supportItem.login) {
+                return true;
+            } else { return false; }
+        } else { return false; }
+    } else { return false; }
+}
+
+function compareItemsRight(indicatorItem, supportItem) {
+    if (indicatorItem.tasks < Number(supportItem.tasks)) {
+       return true;
+    } else if (indicatorItem.tasks === Number(supportItem.tasks)) {
+        if (indicatorItem.penalty > Number(supportItem.penalty)) {
+            return true;
+        } else if (indicatorItem.penalty === Number(supportItem.penalty)) {
+            if (indicatorItem.login > supportItem.login) {
+                return true;
+            } else { return false; }
+        } else { return false; }
+    } else { return false; }
+}
+
+function getSortedLogin(array) {
 
     if (array.length === 1) {
-        return [array[0][0]];
+        return [array[0].login];
     } else if (array.length === 0) {
         return [];
     }
@@ -127,30 +169,18 @@ function sort(array) {
     while (leftIndicator <= rightIndicator) {
 
         //условные блоки левого указателя
-        if (Number(array[leftIndicator][1]) > Number(supportElement[1])) {
+        if (compareItemsLeft(array[leftIndicator], supportElement)) {
             leftIndicator++;
-        } else if (Number(array[leftIndicator][1]) === Number(supportElement[1])) {
-            if (Number(array[leftIndicator][2]) < Number(supportElement[2])) {
-                leftIndicator++;
-            } else if (Number(array[leftIndicator][2]) === Number(supportElement[2])) {
-                if (array[leftIndicator][0] < supportElement[0]) {
-                    leftIndicator++;
-                } else { isLeftStop = true }
-            } else { isLeftStop = true }
-        } else { isLeftStop = true }
+        } else {
+            isLeftStop = true
+        }
 
         //условные блоки правого указателя
-        if (Number(array[rightIndicator][1]) < Number(supportElement[1])) {
+        if (compareItemsRight(array[rightIndicator], supportElement)) {
             rightIndicator--;
-        } else if (Number(array[rightIndicator][1]) === Number(supportElement[1])) {
-            if (Number(array[rightIndicator][2]) > Number(supportElement[2])) {
-                rightIndicator--;
-            } else if (Number(array[rightIndicator][2]) === Number(supportElement[2])) {
-                if (array[rightIndicator][0] > supportElement[0]) {
-                    rightIndicator--;
-                } else { isRightStop = true }
-            } else { isRightStop = true }
-        } else { isRightStop = true }
+        } else { 
+            isRightStop = true 
+        }
 
         //условный блок, если левый и правый указатель остановили движение
         if (isRightStop && isLeftStop) {
@@ -162,12 +192,12 @@ function sort(array) {
     
     let arrayLeft = array.splice(0, leftIndicator);
     let arrayRight = array.splice(0);
-    return [...sort(arrayLeft), supportElement[0], ...sort(arrayRight)];
+    return [...getSortedLogin(arrayLeft), supportElement.login, ...getSortedLogin(arrayRight)];
 }
 
 
 rl.on('close', () => {
-    sort(arrayOfParticipants).forEach(item => {
+    getSortedLogin(arrayOfParticipants).forEach(item => {
         process.stdout.write(`${item}` + '\n');
     })
 })
