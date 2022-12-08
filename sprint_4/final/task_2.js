@@ -103,19 +103,44 @@ None
 
 const readline = require('readline');
 
+/** 
+ * @const модуль, определяющий максимальное количество ключей в хэш таблице
+*/
+const MODULE = 1000003;
+
+/** 
+ * @const множитель для полиномного метода хэширования строки
+*/
+const Q = 1000000007;
+
 const rl = readline.createInterface({
     input: process.stdin,
 });
 let phase = 0;
 
-const hashTable = {};
+const hashTable = [];
 
+/**
+*  @class List - Однонаправленный список
+*  @method initList  - инициирование старта списка
+*  @method put - добавить новый элемент в список
+*  @method get - получить данные по ключу
+*  @method delete - удалить элемент по ключу
+*  @method getSize - получить текущий размер списка
+*/
 class List {
-    constructor(end = null) {
-        this.end = end;
+    constructor() {
+        /**
+        * @param end - ссылка на начало списка
+        */
+        this.end = null;
         this.counter = 0;
     }
-
+    /**
+    * @param {string} key - ключ элемента
+    * @param value - значение элемента
+    * @returns {void}
+    */
     initList(key, value) {
         let newItem = {
             objValue: {
@@ -127,7 +152,12 @@ class List {
         this.end = newItem
         this.counter++
     }
-
+    
+    /**
+    * @param {string} key - ключ элемента
+    * @param value - значение элемента
+    * @returns {void}
+    */
     put(key, value) {
         if(this.end) {
             let checkValue = this.end;
@@ -159,7 +189,10 @@ class List {
             this.initList(key, value)
         }
     }
-
+    /**
+    * @param {string} key - ключ элемента
+    * @returns {string}
+    */
     get(key) {
         if(this.counter === 0) return 'None';
 
@@ -178,7 +211,10 @@ class List {
             return "None";
         }
     }
-
+    /**
+    * @param {string} key - ключ элемента
+    * @returns {string}
+    */
     delete(key) {
         if(this.counter === 0)  return 'None';
 
@@ -202,7 +238,10 @@ class List {
             return 'None';
         }
     }
-
+    /**
+    * @param {string} key - ключ элемента
+    * @returns {number}
+    */
     getSize() {
         return this.counter;
     }
@@ -212,18 +251,18 @@ function getHash(stringData) {
     let str = [...stringData];
 
     if(str.length === 2) {
-        summ = str[0].charCodeAt(0) * 1000000007 + str[1].charCodeAt(0);
-        return summ % 1000003;
+        summ = str[0].charCodeAt(0) * Q + str[1].charCodeAt(0);
+        return summ % MODULE;
     }
 
-    if(str.length === 1) return str[0].charCodeAt(0) % 1000003;
+    if(str.length === 1) return str[0].charCodeAt(0) % MODULE;
 
-    summ = str[0].charCodeAt(0) * 1000000007 + str[1].charCodeAt(0);
+    summ = str[0].charCodeAt(0) * Q + str[1].charCodeAt(0);
 
     for(let i = 2; i < str.length; i++) {
-        summ = (summ % 1000003) * 1000000007 + str[i].charCodeAt(0);
+        summ = (summ % MODULE) * Q + str[i].charCodeAt(0);
     }
-    let hash = summ % 1000003;
+    let hash = summ % MODULE;
     return hash;
 }
 
