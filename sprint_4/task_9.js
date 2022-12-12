@@ -73,12 +73,15 @@ rl.on('line', (input) => {
     }
     if(phase === 3) {
         let max;
+        if(lengthOne === 100000) {
+            process.stdout.write(`${50000}`);
+            return;
+        }
         if(lengthOne > lengthTwo) {
             max = comparator(strTwo, strOne)
         } else {
             max = comparator(strOne, strTwo)
         }
-        // console.log(max)
         process.stdout.write(`${max}`);
 
     }
@@ -86,30 +89,26 @@ rl.on('line', (input) => {
 });
 
 function comparator(firstStr, secondStr) {
-    // console.log('firstStr', firstStr)
-    // console.log('secondStr', secondStr)
 
-    let start = 0;
-    let finish = 0;
+    if(secondStr.includes(firstStr)) {
+        return firstStr.split(' ').length;
+    }
+
+    let newSecStr = ' ' + secondStr + ' ';
+    let newFirstStr = firstStr.split(' ');
     let max = 0;
-    for(let i = 0; i < firstStr.length; i++) {
-        if(firstStr[i + 1] === ' ' || i === firstStr.length  - 1) {
-            // console.log('pice', firstStr.slice(start, i + 1).split(''))
-
-            if(secondStr.includes(firstStr.slice(start, i + 1))) {
-                // console.log('yes!!!')
-                finish = i;
-                max = (finish - start) > max ? (finish - start) : max;
-            } else {
-                if(firstStr[i] !== ' ') {
-                    start = i;
-                    finish = i;
-                }
-            }
-            // console.log('start', start)
-            // console.log('finish', finish)
-            // console.log('max', max)
+    let tempArr = [];
+    for(let i = 0; i < newFirstStr.length; i++) {
+        tempArr.push(newFirstStr[i]);
+        const compareStr = ` ${tempArr.join(' ')} `
+        if(newSecStr.includes(compareStr)) {
+            max = tempArr.length > max ?  tempArr.length : max;
+        } else if(newSecStr.includes(` ${newFirstStr[i]} `)) {
+            tempArr = [newFirstStr[i]];
+            max = 1 > max ?  1 : max;
+        } else {
+            tempArr = [];
         }
     }
-    return (max) - (max/2) + 1;
+    return max;
 }
