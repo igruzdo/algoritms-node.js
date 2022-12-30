@@ -83,9 +83,9 @@ rl.on('line', (input) => {
             tasks: Number(arrItem[1]),
             penalty: Number(arrItem[2]),
         }
-        heapAdd(heap, obj)
+        heapAdd(heap, obj);
     }
-    phase++
+    phase++;
 });
 
 rl.on('close', () => {
@@ -104,7 +104,7 @@ function heapAdd(heap, data) {
     if(heap.length === 0) {
         idx = 1;
     } else {
-        idx = heap.length
+        idx = heap.length;
     }
     heap[idx] = data;
     siftUp(heap, idx);
@@ -116,8 +116,8 @@ function heapAdd(heap, data) {
 */
 
 function heapPop(heap) {
-    let item = heap[1]
-    heap[1] = heap[heap.length - 1]
+    let item = heap[1];
+    heap[1] = heap[heap.length - 1];
     heap.pop();
     shiftDown(heap, 1);
     return item;
@@ -136,7 +136,7 @@ function siftUp(heap, index) {
     let parentIdx = Math.floor(index / 2);
     if(isFirstItemMostPriorited(heap[index], heap[parentIdx])) {
         [heap[index], heap[parentIdx]] = [heap[parentIdx], heap[index]];
-        siftUp(heap, parentIdx)
+        siftUp(heap, parentIdx);
     } 
 }
 
@@ -158,7 +158,7 @@ function shiftDown(heap, idx) {
     if(right <= heap.length - 1 && isFirstItemMostPriorited(heap[right], heap[left])) {
         index_largest = right;
     } else {
-        index_largest = left
+        index_largest = left;
     }
 
     if(isFirstItemMostPriorited(heap[index_largest], heap[idx])) {
