@@ -51,7 +51,7 @@ Oops! I did it again
 
 -- ВРЕМЕННАЯ СЛОЖНОСТЬ --
     Не учитывая процесс ввода данных временная сложность O(|E| * lov|V|), где Е - ребра, V - вершины.
--- АСИМПТОТИЧЕСКАЯ СЛОЖНОСТЬ --
+-- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ --
     Так как нам нужно хранить весь граф, очередь, массив notAdded, то я бы оценил сложность в O(E + V). 
 -- Посылка --
     https://contest.yandex.ru/contest/25070/run-report/80931731/
@@ -62,6 +62,7 @@ class PriorityQueue {
     this.heap = [];
   }
   /**
+   * добавить ребро в приоритетную очередь
    * @param {[string, number]} edge - ребро с концом и весом
    * @returns {void}
    */
@@ -70,6 +71,7 @@ class PriorityQueue {
     this._siftUp();
   }
   /**
+   * извлечь ребро из приоритетной очереди с последующим удалением
    * @returns {[string, number]} - ребро с концом и весом
    */
   dequeue() {
@@ -82,6 +84,7 @@ class PriorityQueue {
     return max;
   }
   /**
+   * выполняет просеивание вверх
    * @returns {void}
    */
   _siftUp() {
@@ -98,6 +101,7 @@ class PriorityQueue {
     }
   }
   /**
+   * выполняет просеивание вниз
    * @returns {void}
    */
   _siftDown() {
@@ -134,6 +138,7 @@ class PriorityQueue {
     }
   }
   /**
+   * возвращает текущее количество элементов в очереди
    * @returns {number}
    */
   size() {
