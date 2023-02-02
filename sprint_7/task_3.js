@@ -58,9 +58,9 @@ rl.on('line', (input) => {
         array.push(input.split(' ').map(item => +item));
     }
 
-    if(phase === numberOfLoot + 1) {
-        rl.emit('close')
-    }
+    // if(phase === numberOfLoot + 1) {
+    //     rl.emit('close')
+    // }
     phase++
 });
 
@@ -75,8 +75,6 @@ function scheduleTasks(tasks) {
     tasks.sort((a, b) => {
         return b[0] - a[0];
     });
-
-    console.log(tasks)
 
     let res = 0;
     for(let i = 0; i < tasks.length; i++) {
