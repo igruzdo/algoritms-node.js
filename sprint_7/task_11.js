@@ -61,11 +61,11 @@ let phase = 0;
 
 rl.on('line', (input) => {
     if(phase === 1) {
-        let x = input.split(' ').map(item => +item);
+        x = input.split(' ').map(item => +item);
     }
 
     if(phase === 3) {
-        let y = input.split(' ').map(item => +item);
+        y = input.split(' ').map(item => +item);
     }
 
 
@@ -76,10 +76,7 @@ rl.on('line', (input) => {
 });
 
 rl.on('close', () => {
-
-    let result = findLCS(x, y);
-    process.stdout.write(`${result}` + '\n');  
-    
+    findLCS(x, y);
 })
 
 
@@ -87,6 +84,8 @@ function findLCS(X, Y) {
     const m = X.length;
     const n = Y.length;
     const dp = new Array(m + 1);
+    let indices1 = [];
+    let indices2 = [];
   
     for (let i = 0; i <= m; i++) {
       dp[i] = new Array(n + 1).fill(0);
@@ -102,23 +101,30 @@ function findLCS(X, Y) {
       }
     }
   
-    const lcsLength = dp[m][n];
-    const lcs = new Array(lcsLength);
+    let lcsLength = dp[m][n];
+    let lcs = new Array(lcsLength);
     let i = m;
     let j = n;
-  
-    while (i > 0 && j > 0) {
-      if (X[i - 1] === Y[j - 1]) {
-        lcs[lcsLength - 1] = X[i - 1];
-        i--;
-        j--;
-        lcsLength--;
-      } else if (dp[i][j - 1] > dp[i - 1][j]) {
-        j--;
-      } else {
-        i--;
-      }
+
+    if(lcsLength > 0) {
+        process.stdout.write(`${lcsLength}` + '\n');  
+        while (i > 0 && j > 0) {
+            if (X[i - 1] === Y[j - 1]) {
+              lcs[lcsLength - 1] = X[i - 1];
+              indices1.push(i)
+              indices2.push(j)
+              i--;
+              j--;
+              lcsLength--;
+            } else if (dp[i][j - 1] > dp[i - 1][j]) {
+              j--;
+            } else {
+              i--;
+            }
+          }
+        process.stdout.write(`${ indices1.reverse().join(' ')}` + '\n');
+        process.stdout.write(`${ indices2.reverse().join(' ')}` + '\n'); 
+    } else {
+        process.stdout.write(`0` + '\n'); 
     }
-  
-    return lcs;
   }
